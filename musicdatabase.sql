@@ -28,7 +28,7 @@ CREATE TABLE `Songs` (
 `song_url` VARCHAR(100) NOT NULL,
 `song_img` VARCHAR(100),
 `user_id` INT(5),
-`date_added` DATETIME NOT NULL,
+`date_added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 `times_played` int(5),
 PRIMARY KEY (song_id),
 CONSTRAINT FK_UserSong FOREIGN KEY (user_id)

@@ -9,7 +9,29 @@
         background-color: #f9f9f9;
     }
 </style>
+<?php
+include('dbconnect.php');
 
+if(isset($_POST['button']))
+{
+    if($_POST['button'] == "login")
+    {
+        $email = mysql_real_escape_string($connection,$_POST['usrname']);
+        $password = mysql_real_escape_string($connection, $_POST['psw']);
+        $strSQL = mysql_query($connection,"SELECT username FROM Users WHERE email'".$email."' and password ='".md5($password)."')");
+        $Results = mysql_fetch_array($strSQL);
+        if(count($Results)>=1)
+        {
+            $message = $Results['usrname']." Login Sucessfully!!";
+        }
+        else
+        {
+            $message = "Invalid email or password!!";
+        }        
+
+    }
+}
+?>
 
 <!-- Modal -->
 <div class="modal fade" id="loginModal" role="dialog">
@@ -24,7 +46,7 @@
             <div class="modal-body">
                 <form role="form">
                 <div class="form-group">
-                    <label for="username"><span class="glyphicon glyphicon-user"></span> Username</label>
+                    <label for="username"><span class="glyphicon glyphicon-user"></span> Email</label>
                     <input type="text" class="form-control" id="usrname" placeholder="Enter email">
                 </div>
                 <div class="form-group">
@@ -34,7 +56,7 @@
                 <div class="checkbox">
                     <label><input type="checkbox" value="" checked>Remember me</label>
                 </div>
-                <button type="submit" class="btn btn-default btn-success btn-block"> Login</button>
+                <button type="submit" class="btn btn-default btn-success btn-block" id="login"> Login</button>
                 </form>
             </div>
             <div class="modal-footer">

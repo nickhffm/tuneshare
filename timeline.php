@@ -15,13 +15,40 @@
 
         <style>
             body {
-                background-color: gray;
+                background-color: #222;
+            }
+            .body-container {
+                background-color: #121212;
+                height: calc(100vh - 54px);
+                height: -webkit-calc(100vh - 54px);
+                display: block;
+                overflow: auto;
+            }
+            .paginator {
+                padding-top: 20px;
+                color: whitesmoke;
+                clear: both;
+                width: 100%;
+                height: 100px;
+            }
+            .pagination li a {
+                background-color: #222;
+                color: white;
+            }
+            .pagination li a:hover {
+                background-color: #555;
+                color: white;
+            }
+            .pagination .disabled a {
+                background-color: #777;
+                color: white;
             }
         </style>
 
         <?php
             include 'components/navbar.php';
             include 'components/list.php';
+            include 'sample-data/sample-data.php';
         ?>
     </head>
 
@@ -29,27 +56,20 @@
         <?php 
             createNavbar('timeline'); 
         ?>
-        <div class="container">
+        <div class="container body-container">
             <?php
-            $list = array();
-            $list[0] = array("title" => "Big Opportunities", "artist" => "John Smith",
-            "description" => "a piece of music unknown by most by known by the rest and is truly enjoyed by those.", 
-            "image_alt" => "music1", "image" => "sample-data/music1.png", "date" => 'Oct. 22, 2018',
-            "tags" => array("good music", "great music", "big"));
-            $list[1] = array("title" => "Trouble Central", "artist" => "Mitch Meyer",
-            "description" => "Electrifying and hair raising in its finest essence.", 
-            "image_alt" => "music2", "image" => "sample-data/music2.png", "date" => 'Oct. 15, 2018',
-            "tags" => array("electronic", "medieval", "hair curling"));
-            $list[3] = array("title" => "Unknown", "artist" => "djrmokis",
-            "description" => "Unfunctional dieties.", 
-            "image_alt" => "music3", "image" => "sample-data/music3.png", "date" => 'Sep. 12, 2017', 
-            "tags" => array("abstract", "noise", "polyatomic"));
-            $list[4] = array("title" => "My name is Michael", "artist" => "Michael",
-            "description" => "Debut album by a new star", 
-            "image_alt" => "music4", "image" => "sample-data/music4.png", "date" => 'May 21, 2017',
-            "tags" => array("country", "vintage", "surreal", "rock", "guitar"));
             createList($list);
             ?>
+            <div class="paginator">
+                Showing results 4 of 4
+                <ul class="pagination" style="display: block; margin-top: 5px;">
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li class="disabled"><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                </ul> 
+            </div>
         </div>
     </body>
 </html>

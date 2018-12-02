@@ -18,7 +18,8 @@ function createNavbar($currentPage) {
                     echo '><a href="upload.php">Upload</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a id="accountButton"><span class="glyphicon glyphicon-user"></span> My Account</a></li>
+                <li '; if ($currentPage == 'profile') { echo 'class="active"'; }
+                echo '><a href="profile.php"><span class="glyphicon glyphicon-user"></span> My Account</a></li>
                 <li><a id="signupButton"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                 <li><a id="loginButton"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
             </ul>

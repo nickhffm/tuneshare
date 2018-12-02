@@ -62,6 +62,17 @@
                 margin: 0 15px 0 15px;
                 color: white;
             }
+            #edit-button, #save-button {
+                position: absolute;
+                right: 40px;
+                top: 65px;
+                z-index: 100;
+                font-size: 20px;
+                color: whitesmoke;
+            }
+            #edit-button:hover, #save-button:hover {
+                cursor: pointer;
+            }
         </style>
     <?php
         include 'components/navbar.php';
@@ -71,13 +82,17 @@
     </head>
 
     <body>
-        <?php 
+        <div id="button-container">
+        <span id="edit-button" class="glyphicon glyphicon-pencil" 
+        data-placement="bottom" data-toggle="tooltip" title="Edit"></span>
+        </div>
+        <?php
+
             createNavbar('');
-            $edit = false;
 
             $item = $list[$_SERVER['QUERY_STRING']];
             echo '
-            <div class="card-container">
+            <div id="content" class="card-container">
                 <div class="image-container">
                     <img class="card-image" src="' . $item['image'] . '" alt="' . $item['image_alt'] . '">
                 </div>
@@ -85,6 +100,7 @@
                     <h1>' . $item['title'] . '</h1>
                     <p><a href="#" class="link">' . $item['artist'] . '</a>&nbsp;&#9900;&nbsp;' . $item['date'] . '</p>
                     <p>' . $item['description'] . '</p>
+                    <p><b>Tags:</b> ' . implode(', ', $item['tags']) . '</p>
                 </div>
             </div>
 
@@ -122,11 +138,74 @@
             }
             
             echo '
-            <div class="comment">
-                <textarea class="new-comment" placeholder="Leave a comment..."></textarea>
-            </div>
+                <div class="comment">
+                    <textarea class="new-comment" placeholder="Leave a comment..."></textarea>
+                </div>
             </div>';
 
         ?>
+
+        <script>
+        initButtons();
+        function initButtons() {
+            $(document).ready(function(){
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+            $("#edit-button").click(function(){
+                $("#edit-button").remove();
+                $("#content div").remove();
+                $(".tooltip-inner").remove();
+                $('#button-container').html(`
+                <span id="save-button" class="glyphicon glyphicon-floppy-disk" 
+                data-placement="bottom" data-toggle="tooltip" title="Save"></span>
+                `);
+                $('#content').html(`
+                <form class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <div class="form-group">
+                        <label for="imageFile">Upload cover art</label>
+                        <input type="file" class="form-control-file" id="imageFile">
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" class="form-control" id="title" placeholder="Enter the title of your work">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" id="description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="tags">Tags (seperate by commas)</label>
+                        <textarea class="form-control" id="tags" rows="2"></textarea>
+                    </div>
+                </form>
+                `);
+                initButtons();
+            });
+            $("#save-button").click(function(){
+                $("#save-button").remove();
+                $("#content div").remove();
+                $(".tooltip-inner").remove();
+                $('#button-container').html(`
+                <span id="edit-button" class="glyphicon glyphicon-pencil" 
+                data-placement="bottom" data-toggle="tooltip" title="Edit"></span>
+                `);
+                $('#content').html(`
+                <?php
+                echo '
+                <div class="image-container">
+                    <img class="card-image" src="' . $item['image'] . '" alt="' . $item['image_alt'] . '">
+                </div>
+                <div class="info-container">
+                    <h1>' . $item['title'] . '</h1>
+                    <p><a href="#" class="link">' . $item['artist'] . '</a>&nbsp;&#9900;&nbsp;' . $item['date'] . '</p>
+                    <p>' . $item['description'] . '</p>
+                    <p><b>Tags:</b> ' . implode(', ', $item['tags']) . '</p>
+                </div>';
+                ?>
+                `);
+                initButtons();
+            });
+        }
+        </script>
     </body>
 </html>

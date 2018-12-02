@@ -3,6 +3,7 @@
 .card-container {
     padding: 10px;
     color: whitesmoke;
+    width: 97.5%;
 }
 .chip {
     display: inline-block;
@@ -39,7 +40,7 @@
     function createList($list) {
         foreach($list as $item) {
             echo '
-                <div class="container">
+                <div class="container card-container ">
                     <a href="content.php?' . $item['id'] . '"><img class="card-image" src="' .
                     $item['image'] . '" alt="' . $item['image_alt'] . 
                     '" style="float:left; width: 180px; height: 180px; padding: 5px;"></a>

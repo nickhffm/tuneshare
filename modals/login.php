@@ -1,4 +1,4 @@
-<?php include('server.php'); ?>
+<?php include('services/server.php'); ?>
 <style>
     .modal-header, h4, .close {
         background-color: #222222;
@@ -11,7 +11,6 @@
     }
 </style>
 <?php
-include('dbconnect.php');
 
 if(isset($_POST['button']))
 {

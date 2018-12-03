@@ -46,28 +46,32 @@
         <div class="container card-container">
             <form class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                 <h2>Upload a song</h2>
-                <hr>
+                <form role="form" action="services/newupload.php" method = "POST">
                 <div class="form-group">
                     <label for="musicFile">Upload mp3 file</label>
-                    <input type="file" class="form-control-file" id="musicFile">
+                    <input type="file" class="form-control-file" name="musicFile">
                 </div>
                 <div class="form-group">
                     <label for="imageFile">Upload cover art</label>
-                    <input type="file" class="form-control-file" id="imageFile">
+                    <input type="file" class="form-control-file" name="imageFile">
                 </div>
                 <div class="form-group">
                     <label for="title">Title</label>
-                    <input type="text" class="form-control" id="title" placeholder="Enter the title of your work">
+                    <input type="text" class="form-control" name="title" placeholder="Enter the title of your work">
+                </div>
+                <div class="form-group">
+                    <label for="title">Artist</label>
+                    <input type="text" class="form-control" name="artist" placeholder="Enter Artist's name">
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea class="form-control" id="description" rows="3"></textarea>
+                    <textarea class="form-control" name="description" rows="3"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="tags">Tags (seperate by commas)</label>
-                    <textarea class="form-control" id="tags" rows="2"></textarea>
+                    <textarea class="form-control" name="tags" rows="2"></textarea>
                 </div>
-                <button type="submit" class="btn btn-secondary">Submit</button>
+                <button type="submit" class="btn btn-secondary" name="new_song">Submit</button>
             </form>
         </div>
     </body>

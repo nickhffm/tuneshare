@@ -21,7 +21,11 @@ if (isset($_POST['new_song'])) {
    
     $sql = "INSERT INTO Users (song_name, artist_name, genre, song_url, song_img, user_id) 
           VALUES('$title', '$artist', '$description', '$songurl', '$songimg','$user_id')";
+    if (count($errors) == 0) {
+    $sql = "INSERT INTO Users (song_name, artist_name, genre, song_url, song_img, user_id) 
+          VALUES('$title', '$artist', '$description', '$songurl', '$songimg','$user_id')";
     $result = $pdo->query($sql);
+  }
 }
 
 ?>
@@ -83,10 +87,8 @@ if (isset($_POST['new_song'])) {
             echo '<button class="btn btn-secondary" onclick="goBack()">Go back</button></div>';
           }
           else {
-            echo 'Song added!';
-            ?>
-            <div><a href="index.php"><button class="btn btn-secondary">Home</button></a></div>
-          <?php
+            echo 'Successfully Added Song!
+            <div><a href="../index.php"><button class="btn btn-secondary">Home</button></a></div>';
           }
           ?>
           

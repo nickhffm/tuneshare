@@ -24,10 +24,14 @@
                 color: whitesmoke;
             }
             .header, h4 {
-                background-color: #222222;
                 color:white !important;
                 text-align: center;
                 font-size: 30px;
+            }
+            .well {
+                margin-top: 25px;
+                background-color: black;
+                border: none;
             }
         </style>
 
@@ -37,9 +41,14 @@
         <?php 
             createNavbar('home'); 
         ?>
-        <div class="container col-xs-12 col-sm-12 col-lg-6 col-md-6">
+        <div class="col-lg-3 col-md-3"></div>
+        <div class="well col-xs-12 col-sm-12 col-lg-6 col-md-6">
+            <div class="header">
+                <h4> Create a new account</h4>
+            </div>
+            <hr>
             <div class="body">
-                <form method="post" action="services/server.php">
+                <form method="post" action="services/newuser.php">
                     <div class="form-group">
                         <label for="username"> Username</label>
                         <input type="text" class="form-control" name="username" placeholder="Enter username">
@@ -68,8 +77,9 @@
                 </form>
             </div>
             <div class="footer">
-                <p>Already have an account? <a href="#">Login</a></p>
+                <p>Already have an account? <a href="login.php">Login</a></p>
             </div>
         </div>
+        <div class="col-lg-3 col-md-3"><div>
     </div>
 </div>

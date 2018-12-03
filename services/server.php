@@ -9,7 +9,7 @@ $firstname = "";
 $lastname = "";
 $password = "";
 $password_2 = "";
-$errors = array(); 
+$GLOBALS['errors'] = array(); 
 
 // REGISTER USER
 if (isset($_POST['reg_user'])) {
@@ -22,11 +22,11 @@ if (isset($_POST['reg_user'])) {
   $password_2 = (isset($_POST['password_2']) ? $_POST['password_2'] : null);
 
   // form validation: ensure that the form is correctly filled
-  // by adding (array_push()) corresponding error unto $errors array
-  if (empty($username)) { array_push($errors, "Username is required"); }
-  if (empty($email)) { array_push($errors, "Email is required"); }
-  if (empty($password_1)) { array_push($errors, "Password is required"); }
-  if ($password != $password_2) { array_push($errors, "Password and password verification must match"); }
+  // by adding (array_push()) corresponding error unto $GLOBALS['errors'] array
+  if (empty($username)) { array_push($GLOBALS['errors'], "Username is required"); }
+  if (empty($email)) { array_push($GLOBALS['errors'], "Email is required"); }
+  if (empty($password)) { array_push($GLOBALS['errors'], "Password is required"); }
+  if ($password != $password_2) { array_push($GLOBALS['errors'], "Password and password verification must match"); }
 
   // first check the database to make sure 
   // a user does not already exist with the same username and/or email
@@ -36,16 +36,16 @@ if (isset($_POST['reg_user'])) {
 
   if ($user) { // if user exists
     if ($user['username'] === $username) {
-      array_push($errors, "Username already exists");
+      array_push($GLOBALS['errors'], "Username already exists");
     }
 
     if ($user['email'] === $email) {
-      array_push($errors, "Email already exists");
+      array_push($GLOBALS['errors'], "Email already exists");
     }
   }
 
   // Finally, register user if there are no errors in the form
-  if (count($errors) == 0) {
+  if (count($GLOBALS['errors']) == 0) {
     $password = md5($password);   //encrypt the password before saving in the database
 
     $sql = "INSERT INTO Users (username, first_name, last_name, email, password) 
@@ -62,23 +62,29 @@ if (isset($_POST['login_user'])) {
   $password = mysqli_real_escape_string($pdo, $_POST['password']);
 
   if (empty($username)) {
-    array_push($errors, "Username is required");
+    array_push($GLOBALS['errors'], "Username is required");
   }
   if (empty($password)) {
-    array_push($errors, "Password is required");
+    array_push($GLOBALS['errors'], "Password is required");
   }
 
-  if (count($errors) == 0) {
+  if (count($GLOBALS['errors']) == 0) {
     $password = md5($password);
     $sql = "SELECT * FROM Users WHERE username='$username' AND password='$password'";
     $result = $pdo->query($sql);
-    if (mysqli_num_rows($result) == 1) {
-      $_SESSION['username'] = $username;
-      $_SESSION['success'] = "You are now logged in";
-    }else {
-      array_push($errors, "Wrong username/password combination");
+    if (mysqli_num_rows($result) != 1) {
+      array_push($GLOBALS['errors'], "Wrong username/password combination");
     }
   }
 }
 
-?>
+if (count($errors) > 0) {
+  echo '<div class="error">';
+  	foreach ($errors as $error) {
+      echo'<p>' . $error . '</p>';
+    }
+  echo '</div>';
+}
+else {
+  echo 'Successfully made new account!';
+}

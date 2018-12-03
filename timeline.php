@@ -31,6 +31,10 @@
             include 'components/navbar.php';
             include 'components/list.php';
             include 'sample-data/sample-data.php';
+            include 'services/database.php';
+
+            $sql = "SELECT * FROM Songs ORDER BY date_added;";
+            $result = $pdo->query($sql);
         ?>
     </head>
 
@@ -40,7 +44,7 @@
         ?>
         <div class="container body-container">
             <?php
-            createList($list);
+            createList($result);
             ?>
         </div>
     </body>

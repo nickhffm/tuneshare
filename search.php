@@ -26,11 +26,19 @@
                 overflow-y: auto;
             }
         </style>
-
         <?php
             include 'components/navbar.php';
             include 'components/list.php';
             include 'sample-data/sample-data.php';
+            include 'services/database.php';
+
+            $sql = "SELECT * FROM Songs WHERE 
+            title LIKE '%{" . $_POST['search'] . "}%' OR 
+            description LIKE '%{" . $_POST['search'] . "}%' OR 
+            genre LIKE '%{" . $_POST['search'] . "}%' OR 
+            artist LIKE '%{" . $_POST['search'] . "}%' 
+            ORDER BY date_added;";
+            $result = $pdo->query($sql);
         ?>
     </head>
 
@@ -40,7 +48,7 @@
         ?>
         <div class="container body-container">
             <?php
-            createList($list);
+            createList($result);
             ?>
         </div>
     </body>

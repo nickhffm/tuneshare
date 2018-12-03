@@ -1,6 +1,6 @@
 <?php
 
-include 'services/database.php';
+include '../services/database.php';
 
 // initializing variables
 $username = "";
@@ -54,30 +54,29 @@ if (isset($_POST['reg_user'])) {
     $_SESSION['username'] = $username;
     $_SESSION['success'] = "You are now logged in";
   }
+}
 
+// LOGIN USER
+if (isset($_POST['login_user'])) {
+  $username = mysqli_real_escape_string($pdo, $_POST['username']);
+  $password = mysqli_real_escape_string($pdo, $_POST['password']);
 
-  // LOGIN USER
-  if (isset($_POST['login_user'])) {
-    $username = mysqli_real_escape_string($pdo, $_POST['username']);
-    $password = mysqli_real_escape_string($pdo, $_POST['password']);
+  if (empty($username)) {
+    array_push($errors, "Username is required");
+  }
+  if (empty($password)) {
+    array_push($errors, "Password is required");
+  }
 
-    if (empty($username)) {
-      array_push($errors, "Username is required");
-    }
-    if (empty($password)) {
-      array_push($errors, "Password is required");
-    }
-
-    if (count($errors) == 0) {
-      $password = md5($password);
-      $sql = "SELECT * FROM Users WHERE username='$username' AND password='$password'";
-      $result = $pdo->query($sql);
-      if (mysqli_num_rows($result) == 1) {
-        $_SESSION['username'] = $username;
-        $_SESSION['success'] = "You are now logged in";
-      }else {
-        array_push($errors, "Wrong username/password combination");
-      }
+  if (count($errors) == 0) {
+    $password = md5($password);
+    $sql = "SELECT * FROM Users WHERE username='$username' AND password='$password'";
+    $result = $pdo->query($sql);
+    if (mysqli_num_rows($result) == 1) {
+      $_SESSION['username'] = $username;
+      $_SESSION['success'] = "You are now logged in";
+    }else {
+      array_push($errors, "Wrong username/password combination");
     }
   }
 }

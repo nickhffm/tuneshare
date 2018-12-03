@@ -20,8 +20,8 @@ function createNavbar($currentPage) {
             <ul class="nav navbar-nav navbar-right">
                 <li '; if ($currentPage == 'profile') { echo 'class="active"'; }
                 echo '><a href="profile.php"><span class="glyphicon glyphicon-user"></span> My Account</a></li>
-                <li><a id="signupButton"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li><a id="loginButton"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li><a href="signup.php"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
             </ul>
             <form class="navbar-form navbar-right" action="/action_page.php">
                 <div class="input-group">
@@ -37,18 +37,4 @@ function createNavbar($currentPage) {
     </nav>
     ';
 }
-
-include 'modals/login.php';
-include 'modals/signup.php';
 ?>
-
-<script>
-$(document).ready(function(){
-    $("#loginButton").click(function(){
-        $("#loginModal").modal();
-    });
-    $("#signupButton").click(function(){
-        $("#signupModal").modal();
-    });
-});
-</script>

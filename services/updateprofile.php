@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 include '../services/database.php';
 
 // initializing variables
@@ -12,7 +14,7 @@ $password_2 = "";
 $errors = array(); 
 
 // REGISTER USER
-if (isset($_POST['reg_user'])) {
+if (isset($_POST['update_info'])) {
   // receive all input values from the form
   $username = (isset($_POST['username']) ? $_POST['username'] : null);
   $firstname = (isset($_POST['firstname']) ? $_POST['firstname'] : null);
@@ -25,26 +27,68 @@ if (isset($_POST['reg_user'])) {
   // by adding (array_push()) corresponding error unto $errors array
   if (empty($username)) { array_push($errors, "Username is required"); }
   if (empty($email)) { array_push($errors, "Email is required"); }
-  if (empty($password)) { array_push($errors, "Password is required"); }
   if ($password != $password_2) { array_push($errors, "Password and password verification must match"); }
 
-    // first check the database to make sure 
-    // a user does not already exist with the same username and/or email
-    $sql = "UPDATE Users SET 
-    username = '$username', 
-    first_name = '$firstname', 
-    last_name =  '$lastname',
-    email = '$email',
-    password = '$password' 
-    WHERE user_id = " . $_SESSION['user_id'] . ";";
+  // first check the database to make sure 
+  // a user does not already exist with the same username and/or email
+  $sql = "SELECT * FROM Users
+   WHERE (username='$username' 
+   OR email='$email' )
+   AND (user_id<>" . $_SESSION['user_id'] . ") 
+   LIMIT 1";
+  $result = $pdo->query($sql);
+  $user = $result->fetch(PDO::FETCH_ASSOC);
 
-    if (count($errors) == 0) {
-        try {
-        $result = $pdo->query($sql);
-        } catch (PDOException $e) {
-            array_push($errors, "Unable to update.");
-        }
+  if ($user) { // if user exists
+    if ($user['username'] === $username) {
+      array_push($errors, "Username already exists");
     }
+
+    if ($user['email'] === $email) {
+      array_push($errors, "Email already exists");
+    }
+  }
+
+  if (count($errors) == 0) {
+    if (!empty($password)) {
+      $password = md5($password);
+      $sql = "UPDATE Users SET 
+      username = '$username', 
+      first_name = '$firstname', 
+      last_name =  '$lastname',
+      email = '$email',
+      password = '$password' 
+      WHERE Users.user_id = " . $_SESSION['user_id'] . ";";
+
+      try {
+        $result = $pdo->query($sql);
+        $_SESSION['username'] = $username;
+        $_SESSION['first_name'] = $firstname;
+        $_SESSION['last_name'] = $lastname;
+        $_SESSION['email'] = $email;
+      } catch (PDOException $e) {
+        array_push($errors, $e);
+      }
+    }
+    else {
+      $sql = "UPDATE Users SET 
+      username = '$username', 
+      first_name = '$firstname', 
+      last_name =  '$lastname',
+      email = '$email'
+      WHERE Users.user_id = " . $_SESSION['user_id'] . ";";
+
+      try {
+      $result = $pdo->query($sql);
+      $_SESSION['username'] = $username;
+      $_SESSION['first_name'] = $firstname;
+      $_SESSION['last_name'] = $lastname;
+      $_SESSION['email'] = $email;
+      } catch (PDOException $e) {
+          array_push($errors, $e);
+      }
+    }
+  }
 }
 ?>
 
@@ -106,8 +150,8 @@ if (isset($_POST['reg_user'])) {
             echo '<button class="btn btn-secondary" onclick="goBack()">Go back</button></div>';
           }
           else {
-            echo 'Successfully made new account!
-            <div><a href="login.php"><button class="btn btn-secondary">Login</button></a></div>';
+            echo 'Updated profile info.
+            <div><a href="/tuneshare/index.php"><button class="btn btn-secondary">Home</button></a></div>';
           }
           ?>
           

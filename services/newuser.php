@@ -114,7 +114,7 @@ if (isset($_POST['reg_user'])) {
           }
           else {
             echo 'Successfully made new account!
-            <div><a href="login.php"><button class="btn btn-secondary">Login</button></a></div>';
+            <div><a href="/tuneshare/login.php"><button class="btn btn-secondary">Login</button></a></div>';
           }
           ?>
           

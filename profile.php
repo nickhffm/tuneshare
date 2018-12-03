@@ -78,29 +78,29 @@
                     <form class="col-xs-12 col-sm-12 col-md-6 col-lg-6" method="post" action="services/updateprofile.php">
                         <div class="form-group">
                             <label for="username">Username</label>
-                            <input type="text" class="form-control" id="username" placeholder="Username">
+                            <input type="text" class="form-control" id="username" placeholder="Username" name="username">
                         </div>
                         <div class="form-group">
                             <label for="firstName">First Name</label>
-                            <input type="text" class="form-control" id="firstName" placeholder="First Name">
+                            <input type="text" class="form-control" id="firstName" placeholder="First Name" name="firstname">
                         </div>
                         <div class="form-group">
                             <label for="lastName">Last Name</label>
-                            <input type="text" class="form-control" id="lastName" placeholder="Last Name">
+                            <input type="text" class="form-control" id="lastName" placeholder="Last Name" name="lastname">
                         </div>
                         <div class="form-group">
                             <label for="title">Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="Email">
+                            <input type="email" class="form-control" id="email" placeholder="Email" name="email">
                         </div>
                         <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Password">
+                            <label for="password">New Password</label>
+                            <input type="password" class="form-control" id="password" placeholder="Password" name="password_1">
                         </div>
                         <div class="form-group">
                             <label for="verifyPassword">Verify Password</label>
-                            <input type="password" class="form-control" id="verifyPassword" placeholder="Verify Password">
+                            <input type="password" class="form-control" id="verifyPassword" placeholder="Verify Password" name="password_2">
                         </div>
-                        <button type="submit" class="btn btn-secondary">Update information</button>
+                        <button name="update_info" type="submit" class="btn btn-secondary">Update information</button>
                     </form>
                 </div>
             </div>
@@ -111,7 +111,10 @@
 
 
         <script>
-
+            $('#username').val('<?php echo $_SESSION['username']; ?>');
+            $('#firstName').val('<?php echo $_SESSION['first_name']; ?>');
+            $('#lastName').val('<?php echo $_SESSION['last_name']; ?>');
+            $('#email').val('<?php echo $_SESSION['email']; ?>');
         </script>
 
     </body>

@@ -22,11 +22,12 @@ if (isset($_POST['login_user'])) {
         $password = md5($password);
         $sql = "SELECT * FROM Users WHERE username='$username' AND password='$password'";
         $result = $pdo->query($sql);
-        if (!$result->fetch[0]) {
+        if (!$result->fetch(PDO::FETCH_ASSOC)['user_id']) {
             array_push($errors, "Wrong username/password combination");
         }
         else {
-
+            session_start();
+            $_SESSION['login_user'] = $result->fetch(PDO::FETCH_ASSOC)['user_id'];
         }
     }
 }
@@ -92,7 +93,7 @@ if (isset($_POST['login_user'])) {
           }
           else {
             echo 'Successfully logged in!
-            <div><a href="index.php"><button class="btn btn-secondary">home</button></a></div>';
+            <div><a href="index.php"><button class="btn btn-secondary">Home</button></a></div>';
           }
           ?>
           

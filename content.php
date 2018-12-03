@@ -77,7 +77,8 @@
     <?php
         include 'components/navbar.php';
         include 'components/list.php';
-        include 'sample-data/sample-data.php';
+        include 'services/database.php';
+        $comments = array();
     ?>
     </head>
 
@@ -89,65 +90,72 @@
         <?php
 
             createNavbar('');
+            $SESSION['song_id'] = $_SERVER['QUERY_STRING'];
+            $songid = $_SERVER['QUERY_STRING'];
+            $sql = "SELECT * FROM Songs WHERE song_id = $songid";
+            $result = $pdo->query($sql);
 
-            $item = $list[$_SERVER['QUERY_STRING']];
-            echo '
-            <div id="content" class="card-container">
-                <div class="image-container">
-                    <img class="card-image" src="' . $item['image'] . '" alt="' . $item['image_alt'] . '">
-                </div>
-                <div class="info-container">
-                    <h1>' . $item['title'] . '</h1>
-                    <p><a href="#" class="link">' . $item['artist'] . '</a>&nbsp;&#9900;&nbsp;' . $item['date'] . '</p>
-                    <p>' . $item['description'] . '</p>
-                    <p><b>Tags:</b> ' . implode(', ', $item['tags']) . '</p>
-                </div>
-            </div>
+            foreach($result as $item) {
 
-            <audio controls>
-                <source src="' . $item['song'] . '" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-
-            <div class="comment-container">
-                <span class="field"> Views: 55 </span>
-                <span class="field"> Likes: 10 </span>
-                <span class="field"> Dislikes: 2 </span>
-                <button type="button" class="btn-secondary">
-                    <span class="glyphicon glyphicon-thumbs-up"></span> Like
-                </button>
-                <button type="button" class="btn-secondary">
-                    <span class="glyphicon glyphicon-thumbs-down"></span> Dislike
-                </button>
-                <button type="button" class="btn-secondary">
-                    <span class="glyphicon glyphicon-heart-empty"></span> Add to favorites
-                </button>
-            </div>
-
-            <div class="comment-container">';
-
-            foreach($comments as $comment) {
                 echo '
-                <div class="comment">
-                    <b>' . $comment['name'] . 
-                    '</b>&nbsp;&#9900;&nbsp;' .
-                    $comment['date'] . 
-                    '<p>' . $comment['comment'] . '</p>
+                <div id="content" class="card-container">
+                    <div class="image-container">
+                        <img class="card-image" src="' . $item['image'] . '" alt="' . $item['title'] . '">
+                    </div>
+                    <div class="info-container">
+                        <h1>' . $item['title'] . '</h1>
+                        <p><a href="#" class="link">' . $item['artist'] . '</a>&nbsp;&#9900;&nbsp;' . $item['date_added'] . '</p>
+                        <p>' . $item['description'] . '</p>
+                        <p><b>Tags:</b> ' . $item['tags'] . '</p>
+                    </div>
                 </div>
-                ';
+
+                <audio controls>
+                    <source src="' . $item['song_url'] . '" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+
+                <div class="comment-container">
+                    <span class="field"> Views: 55 </span>
+                    <span class="field"> Likes: 10 </span>
+                    <span class="field"> Dislikes: 2 </span>
+                    <button type="button" class="btn-secondary">
+                        <span class="glyphicon glyphicon-thumbs-up"></span> Like
+                    </button>
+                    <button type="button" class="btn-secondary">
+                        <span class="glyphicon glyphicon-thumbs-down"></span> Dislike
+                    </button>
+                    <button type="button" class="btn-secondary">
+                        <span class="glyphicon glyphicon-heart-empty"></span> Add to favorites
+                    </button>
+                </div>
+
+                <div class="comment-container">';
+
+                foreach($comments as $comment) {
+                    echo '
+                    <div class="comment">
+                        <b>' . $comment['name'] . 
+                        '</b>&nbsp;&#9900;&nbsp;' .
+                        $comment['date'] . 
+                        '<p>' . $comment['comment'] . '</p>
+                    </div>
+                    ';
+                }
+                
+                echo '
+                    <div class="comment">
+                        <textarea class="new-comment" placeholder="Leave a comment..."></textarea>
+                    </div>
+                </div>';
             }
-            
-            echo '
-                <div class="comment">
-                    <textarea class="new-comment" placeholder="Leave a comment..."></textarea>
-                </div>
-            </div>';
 
         ?>
 
         <script>
-        initButtons();
-        function initButtons() {
+        initButtons($item);
+        function initButtons($item) {
+
             $(document).ready(function(){
                 $('[data-toggle="tooltip"]').tooltip();
             });
@@ -160,10 +168,10 @@
                 data-placement="bottom" data-toggle="tooltip" title="Save"></span>
                 `);
                 $('#content').html(`
-                <form class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <form id="save-form" class="col-xs-12 col-sm-12 col-md-6 col-lg-6" method="post" action="services/updatesong.php">
                     <div class="form-group">
                         <label for="imageFile">Upload cover art</label>
-                        <input type="file" class="form-control-file" id="imageFile">
+                        <input type="file" class="form-control-file" id="image">
                     </div>
                     <div class="form-group">
                         <label for="title">Title</label>
@@ -179,32 +187,17 @@
                     </div>
                 </form>
                 `);
+                $('#image').val($item['image']);
+                $('#title').val($item['title']);
+                $('#description').val($item['description']);
+                $('#tags').val($item['tags']);
                 initButtons();
             });
             $("#save-button").click(function(){
-                $("#save-button").remove();
-                $("#content div").remove();
-                $(".tooltip-inner").remove();
-                $('#button-container').html(`
-                <span id="edit-button" class="glyphicon glyphicon-pencil" 
-                data-placement="bottom" data-toggle="tooltip" title="Edit"></span>
-                `);
-                $('#content').html(`
-                <?php
-                echo '
-                <div class="image-container">
-                    <img class="card-image" src="' . $item['image'] . '" alt="' . $item['image_alt'] . '">
-                </div>
-                <div class="info-container">
-                    <h1>' . $item['title'] . '</h1>
-                    <p><a href="#" class="link">' . $item['artist'] . '</a>&nbsp;&#9900;&nbsp;' . $item['date'] . '</p>
-                    <p>' . $item['description'] . '</p>
-                    <p><b>Tags:</b> ' . implode(', ', $item['tags']) . '</p>
-                </div>';
-                ?>
-                `);
-                initButtons();
+                $('#save-form').submit();
             });
+
+
         }
         </script>
     </body>

@@ -1,29 +1,32 @@
 <?php
 
+session_start();
+
 include '../services/database.php';
 
 $title = "";
-$artist = "";
 $songurl = "";
 $songimg = "";
-$descripton = "";
+$description = "";
 $tags = "";
 $errors = array(); 
+$songfile = "";
+$songimg = "";
+$userid = "";
 
 // LOGIN USER
 if (isset($_POST['new_song'])) {
-    $title = (isset($_POST['title']) ? $_POST['title'] : null);
-    $artist = (isset($_POST['artist']) ? $_POST['artist'] : null);
-    $songurl = (isset($_POST['musicFile']) ? $_POST['MusicFile'] : null);
-    $songimg = (isset($_POST['imgFile']) ? $_POST['imgFile'] : null);
-    $descripton = (isset($_POST['descripton']) ? $_POST['description'] : null);
+    $title = (isset($_POST['title']) ? $_POST['title'] : "");
+    $songfile = (isset($_POST['musicFile']) ? $_POST['musicfile'] : "");
+    $songimg = (isset($_POST['imgFile']) ? $_POST['imagefile'] : "");
+    $descripton = (isset($_POST['description']) ? $_POST['description'] : "");
+    $tags = (isset($_POST['tags']) ? $_POST['tags'] : "");
     $userid = $_SESSION['user_id'];
-   
-    $sql = "INSERT INTO Users (song_name, artist_name, genre, song_url, song_img, user_id) 
-          VALUES('$title', '$artist', '$description', '$songurl', '$songimg','$user_id')";
+    $artist = $_SESSION['first_name'] . " " . $_SESSION['last_name'];
+ 
     if (count($errors) == 0) {
-    $sql = "INSERT INTO Users (song_name, artist_name, genre, song_url, song_img, user_id) 
-          VALUES('$title', '$artist', '$description', '$songurl', '$songimg','$user_id')";
+      $sql = "INSERT INTO Songs (title, artist, description, song_url, image, user_id) 
+      VALUES ('$title', '$artist', '$description', '$songfile', '$songimg', $userid);";
     $result = $pdo->query($sql);
   }
 }

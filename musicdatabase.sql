@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 02, 2018 at 10:40 PM
+-- Generation Time: Dec 03, 2018 at 05:42 AM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.11
 
@@ -76,13 +76,22 @@ CREATE TABLE `Songs` (
   `artist` varchar(255) NOT NULL,
   `genre` varchar(100) NOT NULL,
   `description` text NOT NULL,
-  `image` varchar(100) DEFAULT NULL,
+  `image` blob,
   `user_id` int(5) DEFAULT NULL,
   `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `views` int(5) DEFAULT NULL,
   `likes` int(5) DEFAULT NULL,
-  `dislikes` int(5) DEFAULT NULL
+  `dislikes` int(5) DEFAULT NULL,
+  `song_url` blob NOT NULL,
+  `tags` varchar(1023) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `Songs`
+--
+
+INSERT INTO `Songs` (`song_id`, `title`, `artist`, `genre`, `description`, `image`, `user_id`, `date_added`, `views`, `likes`, `dislikes`, `song_url`, `tags`) VALUES
+(3, 'Big song', 'Nick Huffman', '', '', '', 5, '2018-12-03 04:23:16', NULL, NULL, NULL, '', '');
 
 -- --------------------------------------------------------
 
@@ -99,6 +108,15 @@ CREATE TABLE `Users` (
   `password` varchar(100) NOT NULL,
   `user_img` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `Users`
+--
+
+INSERT INTO `Users` (`user_id`, `username`, `first_name`, `last_name`, `email`, `password`, `user_img`) VALUES
+(3, 'jdog', 'John', 'Smith', 'jsmith@yahoo.com', '912ec803b2ce49e4a541068d495ab570', NULL),
+(4, 'jdoggy', 'John', 'Smith', 'jsmithy@yahoo.com', '912ec803b2ce49e4a541068d495ab570', NULL),
+(5, 'nickhffm', 'Nick', 'Huffman', 'nickhffm@gmail.com', '912ec803b2ce49e4a541068d495ab570', NULL);
 
 --
 -- Indexes for dumped tables
@@ -152,13 +170,13 @@ ALTER TABLE `Users`
 -- AUTO_INCREMENT for table `Songs`
 --
 ALTER TABLE `Songs`
-  MODIFY `song_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `song_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables

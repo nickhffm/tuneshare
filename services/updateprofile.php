@@ -28,30 +28,23 @@ if (isset($_POST['reg_user'])) {
   if (empty($password)) { array_push($errors, "Password is required"); }
   if ($password != $password_2) { array_push($errors, "Password and password verification must match"); }
 
-  // first check the database to make sure 
-  // a user does not already exist with the same username and/or email
-  $sql = "SELECT * FROM Users WHERE username='$username' OR email='$email' LIMIT 1";
-  $result = $pdo->query($sql);
-  $user = $result->fetch(PDO::FETCH_ASSOC);
+    // first check the database to make sure 
+    // a user does not already exist with the same username and/or email
+    $sql = "UPDATE Users SET 
+    username = '$username', 
+    first_name = '$firstname', 
+    last_name =  '$lastname',
+    email = '$email',
+    password = '$password' 
+    WHERE user_id = " . $_SESSION['user_id'] . ";";
 
-  if ($user) { // if user exists
-    if ($user['username'] === $username) {
-      array_push($errors, "Username already exists");
+    if (count($errors) == 0) {
+        try {
+        $result = $pdo->query($sql);
+        } catch (PDOException $e) {
+            array_push($errors, "Unable to update.");
+        }
     }
-
-    if ($user['email'] === $email) {
-      array_push($errors, "Email already exists");
-    }
-  }
-
-  // Finally, register user if there are no errors in the form
-  if (count($errors) == 0) {
-    $password = md5($password);   //encrypt the password before saving in the database
-
-    $sql = "INSERT INTO Users (username, first_name, last_name, email, password) 
-          VALUES('$username', '$firstname', '$lastname', '$email', '$password')";
-    $result = $pdo->query($sql);
-  }
 }
 ?>
 

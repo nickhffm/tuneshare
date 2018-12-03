@@ -75,7 +75,7 @@
         <div class="tab-content">
             <div id="profile" class="tab-pane fade in active">
                 <div class="container card-container">
-                    <form class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <form class="col-xs-12 col-sm-12 col-md-6 col-lg-6" method="post" action="services/updateprofile.php">
                         <div class="form-group">
                             <label for="username">Username</label>
                             <input type="text" class="form-control" id="username" placeholder="Username">
@@ -108,6 +108,11 @@
                 
             </div>
         </div>
+
+
+        <script>
+
+        </script>
 
     </body>
 </html>

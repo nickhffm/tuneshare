@@ -33,7 +33,7 @@
             include 'sample-data/sample-data.php';
             include 'services/database.php';
 
-            $sql = "SELECT * FROM Songs ORDER BY date_added;";
+            $sql = "SELECT * FROM Songs ORDER BY date_added DESC;";
             $result = $pdo->query($sql);
         ?>
     </head>

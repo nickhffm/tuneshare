@@ -1,7 +1,6 @@
 <?php
 
 session_start();
-
 include '../services/database.php';
 
 $title = "";
@@ -14,20 +13,71 @@ $songfile = "";
 $songimg = "";
 $userid = "";
 
+$errors = array(); 
+
+$target_image_dir = realpath(dirname(getcwd())) . '/uploaded-images/';
+$target_image_file = $target_image_dir . basename($_FILES["imageFile"]["name"]);
+$imageFileType = strtolower(pathinfo($target_image_file,PATHINFO_EXTENSION));
+$new_image_file = round(microtime(true)) . '.' . $imageFileType;
+$new_image_dir = $target_image_dir . $new_image_file;
+
+$target_music_dir = realpath(dirname(getcwd())) . '/uploaded-music/';
+$target_music_file = $target_music_dir . basename($_FILES["musicFile"]["name"]);
+$musicFileType = strtolower(pathinfo($target_music_file,PATHINFO_EXTENSION));
+$new_music_file = round(microtime(true)) . '.' . $musicFileType;
+$new_music_dir = $target_music_dir . $new_music_file;
+
+$uploadOk = 1;
+
 // LOGIN USER
 if (isset($_POST['new_song'])) {
-    $title = (isset($_POST['title']) ? $_POST['title'] : "");
-    $songfile = (isset($_POST['musicFile']) ? $_POST['musicfile'] : "");
-    $songimg = (isset($_POST['imgFile']) ? $_POST['imagefile'] : "");
-    $descripton = (isset($_POST['description']) ? $_POST['description'] : "");
-    $tags = (isset($_POST['tags']) ? $_POST['tags'] : "");
-    $userid = $_SESSION['user_id'];
-    $artist = $_SESSION['first_name'] . " " . $_SESSION['last_name'];
- 
-    if (count($errors) == 0) {
-      $sql = "INSERT INTO Songs (title, artist, description, song_url, image, user_id) 
-      VALUES ('$title', '$artist', '$description', '$songfile', '$songimg', $userid);";
-    $result = $pdo->query($sql);
+  $title = (isset($_POST['title']) ? $_POST['title'] : "");
+  $description = (isset($_POST['description']) ? $_POST['description'] : "");
+  $tags = (isset($_POST['tags']) ? $_POST['tags'] : "");
+  $userid = $_SESSION['user_id'];
+  $artist = $_SESSION['first_name'] . " " . $_SESSION['last_name'];
+
+  $check = getimagesize($_FILES["imageFile"]["tmp_name"]);
+  if($check !== false) {
+    $uploadOk = 1;
+  } else {
+    $uploadOk = 0;
+  }
+
+  // Allow for mp3 files only
+  if($musicFileType != "mp3") {
+      array_push($errors, "Only mp3 music files are allowed.");
+      $uploadOk = 0;
+  }
+
+  // Check if $uploadOk is set to 0 by an error
+  if ($uploadOk == 0) {
+    array_push($errors, "Sorry, there was an error uploading your file.");
+  // if everything is ok, try to upload file
+  } else {
+
+    if (!move_uploaded_file($_FILES["imageFile"]["tmp_name"], $new_image_dir)) {
+      array_push($errors, "Sorry, there was an error uploading your image file.");
+    } 
+    if (!move_uploaded_file($_FILES["musicFile"]["tmp_name"], $new_music_dir)) {
+      array_push($errors, "Sorry, there was an error uploading your music file.");
+    } 
+  }
+
+  if (count($errors) == 0) {
+    $musicpath = "/tuneshare/uploaded-music/" . $new_music_file;
+    $imagepath = "/tuneshare/uploaded-images/"  . $new_image_file;
+    $sql = "INSERT INTO Songs (title, artist, description, image_url, song_url, user_id, tags) 
+    VALUES (:title, :artist, :description, :imagepath, :musicpath, :userid, :tags)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':title', $title);
+    $stmt->bindParam(':artist', $artist);
+    $stmt->bindParam(':description', $description);
+    $stmt->bindParam(':imagepath', $imagepath);
+    $stmt->bindParam(':musicpath', $musicpath);
+    $stmt->bindParam(':userid', $userid);
+    $stmt->bindParam(':tags', $tags);
+    $stmt->execute();
   }
 }
 

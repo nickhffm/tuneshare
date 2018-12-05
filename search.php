@@ -33,11 +33,12 @@
             include 'services/database.php';
 
             $sql = "SELECT * FROM Songs WHERE 
-            title LIKE '%{" . $_POST['search'] . "}%' OR 
-            description LIKE '%{" . $_POST['search'] . "}%' OR 
-            genre LIKE '%{" . $_POST['search'] . "}%' OR 
-            artist LIKE '%{" . $_POST['search'] . "}%' 
-            ORDER BY date_added;";
+            title LIKE '%" . $_POST['search'] . "%' OR 
+            description LIKE '%" . $_POST['search'] . "%' OR 
+            genre LIKE '%" . $_POST['search'] . "%' OR 
+            tags LIKE '%" . $_POST['search'] . "%' OR 
+            artist LIKE '%" . $_POST['search'] . "%' 
+            ORDER BY date_added DESC;";
             $result = $pdo->query($sql);
         ?>
     </head>

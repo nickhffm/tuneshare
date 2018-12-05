@@ -48,11 +48,11 @@
                 <h2>Upload a song</h2>
                 <div class="form-group">
                     <label for="musicFile">Upload mp3 file</label>
-                    <input type="file" class="form-control-file" name="musicfile">
+                    <input type="file" class="form-control-file" name="musicFile">
                 </div>
                 <div class="form-group">
                     <label for="imageFile">Upload cover art</label>
-                    <input type="file" class="form-control-file" name="imagefile">
+                    <input type="file" class="form-control-file" name="imageFile">
                 </div>
                 <div class="form-group">
                     <label for="title">Title</label>

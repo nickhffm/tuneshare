@@ -42,7 +42,7 @@
             echo '
                 <div class="container card-container ">
                     <a href="content.php?' . $item['song_id'] . '"><img class="card-image" src="' .
-                    $item['image'] . '" alt="' . $item['title'] . 
+                    $item['image_url'] . '" alt="' . $item['title'] . 
                     '" style="float:left; width: 180px; height: 180px; padding: 5px;"></a>
                     <a href="content.php?' . $item['song_id'] . '" class="header"><h2>' . $item['title'] . '</h2></a>
                     <p><a href="#" class="link">' . $item['artist'] . '</a>&nbsp;&#9900;&nbsp;' . $item['date_added'] . '</p>

@@ -63,7 +63,6 @@
             </div>
             <div class="footer">
                 <p>Don't have an account? <a href="signup.php">Sign Up</a></p>
-                <p>Forgot <a href="#">Password?</a></p>
             </div>
         </div>
         <div class="col-lg-3 col-md-3"></div>

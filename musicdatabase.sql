@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 03, 2018 at 05:42 AM
+-- Generation Time: Dec 05, 2018 at 09:58 AM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.11
 
@@ -32,9 +32,9 @@ CREATE TABLE `Comments` (
   `comment_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `song_id` int(11) NOT NULL,
-  `parent_comment_id` int(11) NOT NULL,
-  `date` date NOT NULL,
-  `comment` text NOT NULL
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `comment` varchar(2055) NOT NULL,
+  `parent_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -76,13 +76,13 @@ CREATE TABLE `Songs` (
   `artist` varchar(255) NOT NULL,
   `genre` varchar(100) NOT NULL,
   `description` text NOT NULL,
-  `image` blob,
+  `image_url` varchar(1023) DEFAULT NULL,
   `user_id` int(5) DEFAULT NULL,
   `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `views` int(5) DEFAULT NULL,
-  `likes` int(5) DEFAULT NULL,
-  `dislikes` int(5) DEFAULT NULL,
-  `song_url` blob NOT NULL,
+  `views` int(5) DEFAULT '0',
+  `likes` int(5) DEFAULT '0',
+  `dislikes` int(5) DEFAULT '0',
+  `song_url` varchar(1023) NOT NULL,
   `tags` varchar(1023) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -90,8 +90,11 @@ CREATE TABLE `Songs` (
 -- Dumping data for table `Songs`
 --
 
-INSERT INTO `Songs` (`song_id`, `title`, `artist`, `genre`, `description`, `image`, `user_id`, `date_added`, `views`, `likes`, `dislikes`, `song_url`, `tags`) VALUES
-(3, 'Big song', 'Nick Huffman', '', '', '', 5, '2018-12-03 04:23:16', NULL, NULL, NULL, '', '');
+INSERT INTO `Songs` (`song_id`, `title`, `artist`, `genre`, `description`, `image_url`, `user_id`, `date_added`, `views`, `likes`, `dislikes`, `song_url`, `tags`) VALUES
+(9, 'Big opportunities', 'Nick Huffman', '', 'a piece of music unknown by most by known by the rest and is truly enjoyed by those.', '/tuneshare/uploaded-images/1543992673.png', 5, '2018-12-05 06:51:13', 4, 0, 1, '/tuneshare/uploaded-music/1543992673.mp3', 'good music, great music, big'),
+(10, 'Trouble Central', 'Nick Huffman', '', 'Electrifying and hair raising in its finest essence.', '/tuneshare/uploaded-images/1543992731.png', 5, '2018-12-05 06:52:10', 5, 0, 1, '/tuneshare/uploaded-music/1543992731.mp3', 'electronic, medieval, hair curling'),
+(11, 'Unknown', 'Nick Huffman', '', 'Unfunctional dieties.', '/tuneshare/uploaded-images/1543992789.png', 5, '2018-12-05 06:53:08', 1, 0, 1, '/tuneshare/uploaded-music/1543992789.mp3', 'abstract, noise, polyatomic'),
+(12, 'Michaell', 'Nick Huffman', '', 'Debut album by a new star', '/tuneshare/uploaded-images/1543993438.png', 5, '2018-12-05 06:54:11', 52, 0, 1, '/tuneshare/uploaded-music/1543992851.mp3', 'country, vintage, surreal, rock, guitar');
 
 -- --------------------------------------------------------
 
@@ -127,9 +130,9 @@ INSERT INTO `Users` (`user_id`, `username`, `first_name`, `last_name`, `email`, 
 --
 ALTER TABLE `Comments`
   ADD PRIMARY KEY (`comment_id`),
-  ADD KEY `FK_ParentComment` (`parent_comment_id`),
+  ADD KEY `FK_CommentSong` (`song_id`),
   ADD KEY `FK_CommentUser` (`user_id`),
-  ADD KEY `FK_CommentSong` (`song_id`);
+  ADD KEY `FK_ParentComment` (`parent_id`);
 
 --
 -- Indexes for table `Favorites`
@@ -167,10 +170,28 @@ ALTER TABLE `Users`
 --
 
 --
+-- AUTO_INCREMENT for table `Comments`
+--
+ALTER TABLE `Comments`
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `Favorites`
+--
+ALTER TABLE `Favorites`
+  MODIFY `favorite_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `Feedback`
+--
+ALTER TABLE `Feedback`
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT for table `Songs`
 --
 ALTER TABLE `Songs`
-  MODIFY `song_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `song_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `Users`
@@ -188,7 +209,7 @@ ALTER TABLE `Users`
 ALTER TABLE `Comments`
   ADD CONSTRAINT `FK_CommentSong` FOREIGN KEY (`song_id`) REFERENCES `Songs` (`song_id`),
   ADD CONSTRAINT `FK_CommentUser` FOREIGN KEY (`user_id`) REFERENCES `Users` (`user_id`),
-  ADD CONSTRAINT `FK_ParentComment` FOREIGN KEY (`parent_comment_id`) REFERENCES `Comments` (`comment_id`);
+  ADD CONSTRAINT `FK_ParentComment` FOREIGN KEY (`parent_id`) REFERENCES `Comments` (`comment_id`);
 
 --
 -- Constraints for table `Favorites`

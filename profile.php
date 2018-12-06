@@ -31,6 +31,17 @@
             display: flex;
             padding-bottom: 20px;
         }
+        .body-container {
+            background-color: #121212;
+            color: whitesmoke;
+            height: calc(100vh - 54px);
+            height: -webkit-calc(100vh - 54px);
+            display: block;
+            overflow-y: auto;
+        }
+        .container-fluid .container {
+            display: block;
+        }
         .btn-secondary {
             background-color: #444;
         }
@@ -104,8 +115,22 @@
                     </form>
                 </div>
             </div>
-            <div id="favorites" class="tab-pane fade">
-                
+            <?php
+                include 'components/list.php';
+                include 'services/database.php';
+
+                $userid = $_SESSION['user_id'];
+                $sql = "SELECT * FROM Songs WHERE song_id IN 
+                (SELECT song_id FROM Favorites WHERE user_id = $userid) 
+                ORDER BY date_added DESC;";
+                $result = $pdo->query($sql);
+            ?>
+            <div id="favorites" class="tab-pane fade in">
+                <div class="container-fluid body-container">
+                    <?php
+                    createList($result);
+                    ?>
+                </div>
             </div>
         </div>
 

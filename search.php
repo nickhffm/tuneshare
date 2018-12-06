@@ -29,7 +29,6 @@
         <?php
             include 'components/navbar.php';
             include 'components/list.php';
-            include 'sample-data/sample-data.php';
             include 'services/database.php';
 
             $sql = "SELECT * FROM Songs WHERE 

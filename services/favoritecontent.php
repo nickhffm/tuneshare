@@ -19,3 +19,8 @@ if (isset($_POST['favorite_content'])) {
 <script>
 window.history.back();
 </script>
+<style>
+    body {
+        background-color: #222;
+    }
+</style>

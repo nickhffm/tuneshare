@@ -23,7 +23,7 @@ $title = (isset($_POST['title']) ? $_POST['title'] : null);
 $description = (isset($_POST['description']) ? $_POST['description'] : null);
 $tags = (isset($_POST['tags']) ? $_POST['tags'] : null);
 
-if ($_FILES["imageFile"]) {
+if ($_FILES["imageFile"]["error"] == 0) {
     $check = getimagesize($_FILES["imageFile"]["tmp_name"]);
     if($check !== false) {
         $uploadOk = 1;

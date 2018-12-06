@@ -24,3 +24,8 @@ if (isset($_POST['dislike_content'])) {
 <script>
 window.history.back();
 </script>
+<style>
+    body {
+        background-color: #222;
+    }
+</style>

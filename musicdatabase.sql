@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 05, 2018 at 09:58 AM
+-- Generation Time: Dec 06, 2018 at 01:37 AM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.11
 
@@ -37,6 +37,17 @@ CREATE TABLE `Comments` (
   `parent_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `Comments`
+--
+
+INSERT INTO `Comments` (`comment_id`, `user_id`, `song_id`, `date`, `comment`, `parent_id`) VALUES
+(3, 5, 11, '2018-12-05 23:21:52', 'Great song but a little strange', 0),
+(4, 5, 11, '2018-12-05 23:53:35', 'What is wrong with this song', 0),
+(5, 6, 12, '2018-12-05 23:55:30', 'wtf', 0),
+(6, 6, 11, '2018-12-05 23:56:50', 'Not my style', 0),
+(7, 5, 13, '2018-12-06 00:04:07', 'Interesting song choice', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -47,8 +58,18 @@ CREATE TABLE `Favorites` (
   `favorite_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `song_id` int(11) NOT NULL,
-  `date` date NOT NULL
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `Favorites`
+--
+
+INSERT INTO `Favorites` (`favorite_id`, `user_id`, `song_id`, `date`) VALUES
+(1, 5, 12, '2018-12-05 22:22:30'),
+(2, 6, 12, '2018-12-05 23:55:46'),
+(3, 6, 11, '2018-12-05 23:56:45'),
+(4, 6, 13, '2018-12-06 00:02:28');
 
 -- --------------------------------------------------------
 
@@ -63,6 +84,16 @@ CREATE TABLE `Feedback` (
   `likes` tinyint(1) NOT NULL,
   `dislikes` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `Feedback`
+--
+
+INSERT INTO `Feedback` (`feedback_id`, `user_id`, `song_id`, `likes`, `dislikes`) VALUES
+(1, 5, 12, 1, 0),
+(2, 5, 9, 0, 1),
+(3, 6, 12, 1, 0),
+(4, 6, 13, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -91,10 +122,11 @@ CREATE TABLE `Songs` (
 --
 
 INSERT INTO `Songs` (`song_id`, `title`, `artist`, `genre`, `description`, `image_url`, `user_id`, `date_added`, `views`, `likes`, `dislikes`, `song_url`, `tags`) VALUES
-(9, 'Big opportunities', 'Nick Huffman', '', 'a piece of music unknown by most by known by the rest and is truly enjoyed by those.', '/tuneshare/uploaded-images/1543992673.png', 5, '2018-12-05 06:51:13', 4, 0, 1, '/tuneshare/uploaded-music/1543992673.mp3', 'good music, great music, big'),
+(9, 'Big opportunities', 'Nick Huffman', '', 'a piece of music unknown by most by known by the rest and is truly enjoyed by those.', '/tuneshare/uploaded-images/1543992673.png', 5, '2018-12-05 06:51:13', 8, 0, 1, '/tuneshare/uploaded-music/1543992673.mp3', 'good music, great music, big'),
 (10, 'Trouble Central', 'Nick Huffman', '', 'Electrifying and hair raising in its finest essence.', '/tuneshare/uploaded-images/1543992731.png', 5, '2018-12-05 06:52:10', 5, 0, 1, '/tuneshare/uploaded-music/1543992731.mp3', 'electronic, medieval, hair curling'),
-(11, 'Unknown', 'Nick Huffman', '', 'Unfunctional dieties.', '/tuneshare/uploaded-images/1543992789.png', 5, '2018-12-05 06:53:08', 1, 0, 1, '/tuneshare/uploaded-music/1543992789.mp3', 'abstract, noise, polyatomic'),
-(12, 'Michaell', 'Nick Huffman', '', 'Debut album by a new star', '/tuneshare/uploaded-images/1543993438.png', 5, '2018-12-05 06:54:11', 52, 0, 1, '/tuneshare/uploaded-music/1543992851.mp3', 'country, vintage, surreal, rock, guitar');
+(11, 'Unknown', 'Nick Huffman', '', 'Unfunctional dieties.', '/tuneshare/uploaded-images/1543992789.png', 5, '2018-12-05 06:53:08', 12, 0, 0, '/tuneshare/uploaded-music/1543992789.mp3', 'abstract, noise, polyatomic'),
+(12, 'Michaell', 'Nick Huffman', '', 'Debut album by a new star', '/tuneshare/uploaded-images/1543993438.png', 5, '2018-12-05 06:54:11', 72, 2, 0, '/tuneshare/uploaded-music/1543992851.mp3', 'country, vintage, surreal, rock, guitar'),
+(13, 'Despacito', 'Austin Villeneuve', '', 'When you write songs, you have to put a face to the lyric a little bit, but it was such a sexy song that there wasn’t really a person. It was a scenario more than a person. I went there. I went to that place, and that place was in a club somewhere, when you get to a club and you just start making that eye contact with this beautiful girl. And that’s kind of how the song starts. It’s really a story. In the beginning of the lyric it says, “Hey, I notice that you’re looking at me. I’m looking at you. Let’s connect.” It kinda goes little by little until it gets to the chorus, where it goes, “All right. We’re here, but now, let’s enjoy the moment. \"That’s kind of what this song is all about, enjoying the moment, not rushing through it. Myself and my co-writer, we were both there sort of in mind in this scenario of this real sexy place, but there really wasn’t a face to it.', '/tuneshare/uploaded-images/1544054487.jpg', 6, '2018-12-06 00:01:27', 8, 1, 0, '/tuneshare/uploaded-music/1544054487.mp3', 'latino, spanish, despacito, big');
 
 -- --------------------------------------------------------
 
@@ -119,7 +151,8 @@ CREATE TABLE `Users` (
 INSERT INTO `Users` (`user_id`, `username`, `first_name`, `last_name`, `email`, `password`, `user_img`) VALUES
 (3, 'jdog', 'John', 'Smith', 'jsmith@yahoo.com', '912ec803b2ce49e4a541068d495ab570', NULL),
 (4, 'jdoggy', 'John', 'Smith', 'jsmithy@yahoo.com', '912ec803b2ce49e4a541068d495ab570', NULL),
-(5, 'nickhffm', 'Nick', 'Huffman', 'nickhffm@gmail.com', '912ec803b2ce49e4a541068d495ab570', NULL);
+(5, 'nickhffm', 'Nick', 'Huffman', 'nickhffm@gmail.com', '912ec803b2ce49e4a541068d495ab570', NULL),
+(6, 'austindv', 'Austin', 'Villeneuve', 'austin@austin.net', '202cb962ac59075b964b07152d234b70', NULL);
 
 --
 -- Indexes for dumped tables
@@ -131,8 +164,7 @@ INSERT INTO `Users` (`user_id`, `username`, `first_name`, `last_name`, `email`, 
 ALTER TABLE `Comments`
   ADD PRIMARY KEY (`comment_id`),
   ADD KEY `FK_CommentSong` (`song_id`),
-  ADD KEY `FK_CommentUser` (`user_id`),
-  ADD KEY `FK_ParentComment` (`parent_id`);
+  ADD KEY `FK_CommentUser` (`user_id`);
 
 --
 -- Indexes for table `Favorites`
@@ -173,31 +205,31 @@ ALTER TABLE `Users`
 -- AUTO_INCREMENT for table `Comments`
 --
 ALTER TABLE `Comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `Favorites`
 --
 ALTER TABLE `Favorites`
-  MODIFY `favorite_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `favorite_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `Feedback`
 --
 ALTER TABLE `Feedback`
-  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `Songs`
 --
 ALTER TABLE `Songs`
-  MODIFY `song_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `song_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables

@@ -89,7 +89,28 @@ as the image itself. If a main comment is deleted, so are their children (reply 
                 </div>
                 ');
                 createCarousel($items);
-            ?>
+
+                include 'services/database.php';
+                $sql = "SELECT * FROM Songs ORDER BY Views DESC LIMIT 3";
+                $topsongs = $pdo->query($sql);
+
+                echo '
+                <div class="jumbotron" style="background-color: #121212; color: whitesmoke; padding: 40px;">
+                <h1 class="row">Top Songs</h1>
+                <div class="row">
+                ';
+            
+                    foreach ($topsongs as $song) {
+                        echo '<a style="color: inherit; text-decoration: none" href="content.php?' . $song['song_id'] . '">
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <img src="' . $song['image_url'] . '" alt = "' . $song['title'] . '" style="width:100%">
+                            <h3>' . $song['title'] . '</h3>
+                        </div></a>';
+                    }
+                echo '</div>
+            </div>
         </div>
     </body>
-</html>
+</html>';
+
+?>

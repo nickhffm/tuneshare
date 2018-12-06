@@ -51,8 +51,8 @@
             <div class="body">
                 <form role="form" action="services/loginuser.php" method = "POST">
                 <div class="form-group">
-                    <label for="username"><span class="glyphicon glyphicon-user"></span> Email</label>
-                    <input type="text" class="form-control" id="usrname" placeholder="Enter email" name="username">
+                    <label for="username"><span class="glyphicon glyphicon-user"></span> Username</label>
+                    <input type="text" class="form-control" id="username" placeholder="Enter username" name="username">
                 </div>
                 <div class="form-group">
                     <label for="password"><span class="glyphicon glyphicon-eye-open"></span> Password</label>

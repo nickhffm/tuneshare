@@ -8,7 +8,7 @@ function createNavbar($currentPage) {
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/tuneshare/index.php" style="padding: 6px 25px 6px 25px;">
-                    <img src="/tuneshare/images/logo.png" alt="SoundShare" style="height: 100%">
+                    <img src="/tuneshare/images/logo.png" alt="TuneShare" style="height: 100%">
                 </a>
             </div>
             <ul class="nav navbar-nav">

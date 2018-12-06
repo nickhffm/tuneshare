@@ -22,3 +22,8 @@ if (isset($_POST['submit_comment'])) {
 <script>
 window.history.back();
 </script>
+<style>
+    body {
+        background-color: #222;
+    }
+</style>
